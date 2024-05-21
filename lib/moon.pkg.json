@@ -1,0 +1,23 @@
+{
+  "import": [
+    "peter-jerry-ye/worker/js",
+    "peter-jerry-ye/worker/web",
+    {
+      "path": "peter-jerry-ye/worker/cloudflare",
+      "alias": "cf"
+    },
+    "moonbitlang/x/json5"
+  ],
+  "link": {
+    "js": {
+      "exports": [
+        "fetch"
+      ]
+    },
+    "wasm-gc": {
+      "exports": [
+        "fetch_ffi:fetch"
+      ]
+    }
+  }
+}
