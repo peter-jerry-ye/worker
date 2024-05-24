@@ -22,7 +22,7 @@ The FFIs are divided to three layers:
 - `*_ffi`: All parameters and results are `JS_Value`, which stands for any value
   in JavaScript.
 - `*_js`: All parameters and results are specific JS types, except for
-  `Promise[T]` (which is wrapped for correctness).
+  `Promise[T]` (Warning: Do not try to create `Promise[Promise[T]]`).
 - `*`: `Array` and `String` are converted to MoonBit type for ergonomics.
 
 ### Run the project
