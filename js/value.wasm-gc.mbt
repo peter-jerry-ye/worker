@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-type JsValue
+pub type JsValue
 
 pub trait ToJsValue {
   to_js_value(Self) -> JsValue
