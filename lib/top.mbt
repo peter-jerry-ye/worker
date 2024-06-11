@@ -72,7 +72,7 @@ let put_handler : Handler = Handler(
       fn {
         t => {
           let text = t.to_string()
-          @json5.parse(text).to_option().bind(
+          @json.parse(text).to_option().bind(
             fn {
               value => {
                 let key = value.value("key")?.as_string()?

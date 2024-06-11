@@ -5,8 +5,7 @@
     {
       "path": "peter-jerry-ye/worker/cloudflare",
       "alias": "cf"
-    },
-    "moonbitlang/x/json5"
+    }
   ],
   "link": {
     "js": {
