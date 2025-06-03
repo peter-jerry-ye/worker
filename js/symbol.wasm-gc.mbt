@@ -19,7 +19,7 @@ pub fn FromJsValue::from_js_value(value : JsValue) -> JS_Symbol {
 }
 
 pub fn ToJsValue::to_js_value(arr : JS_Symbol) -> JsValue {
-  arr.0
+  arr._
 }
 
 fn JS_Symbol::make_ffi(value : JsValue) -> JsValue = "peter-jerry-ye:worker/js" "symbol"

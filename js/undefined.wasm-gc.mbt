@@ -19,17 +19,17 @@ pub fn FromJsValue::from_js_value[T](value : JsValue) -> Optional[T] {
 }
 
 pub fn ToJsValue::to_js_value[T](value : Optional[T]) -> JsValue {
-  value.0
+  value._
 }
 
 pub fn is_undefined[T](self : Optional[T]) -> Bool {
-  self.0.is_undefined()
+  self._.is_undefined()
 }
 
 pub fn to_option[T : FromJsValue](self : Optional[T]) -> Option[T] {
-  if self.0.is_undefined() {
+  if self._.is_undefined() {
     None
   } else {
-    Some(from_js_value(self.0))
+    Some(from_js_value(self._))
   }
 }

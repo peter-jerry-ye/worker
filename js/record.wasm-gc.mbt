@@ -29,5 +29,5 @@ pub fn FromJsValue::from_js_value(value : JsValue) -> Record {
 }
 
 pub fn ToJsValue::to_js_value(value : Record) -> JsValue {
-  value.0
+  value._
 }

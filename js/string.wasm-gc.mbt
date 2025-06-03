@@ -15,7 +15,7 @@
 type JsString JsValue
 
 pub fn ToJsValue::to_js_value(self : JsString) -> JsValue {
-  self.0
+  self._
 }
 
 pub fn FromJsValue::from_js_value(self : JsValue) -> JsString {
