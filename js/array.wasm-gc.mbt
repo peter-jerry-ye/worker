@@ -45,7 +45,7 @@ pub fn length[T](self : JsArray[T]) -> Int {
 }
 
 pub fn JsArray::to_array[T : FromJsValue](value : JsArray[T]) -> Array[T] {
-  let array = Array::with_capacity(value.length())
+  let array = Array::new(capacity=value.length())
   for i = 0; i < value.length(); i = i + 1 {
     array.push(value.get(i))
   }
@@ -54,7 +54,7 @@ pub fn JsArray::to_array[T : FromJsValue](value : JsArray[T]) -> Array[T] {
 
 pub fn JsArray::from_array[T : ToJsValue](arr : Array[T]) -> JsArray[T] {
   let array = JsArray::new()
-  arr.iter(fn { v => array.push(v) })
+  arr.each(fn { v => array.push(v) })
   array
 }
 

@@ -45,22 +45,17 @@ pub fn JsString::to_code_point_js(value : JsString) -> JsArray[Int] {
 }
 
 pub fn JsString::from_string(str : String) -> JsString {
-  str.as_iter().map(Char::to_int).fold(
-    fn(array : JsArray[Int], ch : Int) {
-      array.push(ch)
-      array
-    },
-    JsArray::new(),
-  )
-  |> JsString::from_code_point_js
+  let array = JsArray::new()
+  for ch in str {
+    array.push(ch.to_int())
+  }
+  JsString::from_code_point_js(array)
 }
 
 pub fn JsString::to_string(str : JsString) -> String {
-  str.to_code_point_js().to_array().as_iter().fold(
-    fn(buffer : Buffer, ch : Int) {
-      buffer.write_char(Char::from_int(ch))
-      buffer
-    },
-    Buffer::make(100),
-  ).to_string()
+  let builder = StringBuilder::new(size_hint=str.length() * 2)
+  for ch in str.to_code_point_js().to_array() {
+    builder.write_char(ch.unsafe_to_char())
+  }
+  builder.to_string()
 }
