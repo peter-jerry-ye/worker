@@ -82,7 +82,7 @@ pub impl @js.ToJsValue for Headers with
 
 fn Headers::get_ffi(self : @js.JsValue, name : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/headers" "get"
 
-pub fn get_js(
+pub fn Headers::get_js(
   self : Headers,
   name : @js.JsString
 ) -> @js.Nullable[@js.JsString] {
@@ -90,17 +90,17 @@ pub fn get_js(
   |> @js.from_js_value
 }
 
-pub fn get(self : Headers, name : String) -> Option[String] {
+pub fn Headers::get(self : Headers, name : String) -> Option[String] {
   self.get_js(@js.JsString::from_string(name)).to_option().map(@js.JsString::to_string)
 }
 
 fn Headers::has_ffi(self : @js.JsValue, name : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/headers" "has"
 
-fn has_js(self : Headers, name : @js.JsString) -> Bool {
+fn Headers::has_js(self : Headers, name : @js.JsString) -> Bool {
   Headers::has_ffi(self |> @js.to_js_value, name |> @js.to_js_value)
   |> @js.from_js_value
 }
 
-pub fn has(self : Headers, name : String) -> Bool {
+pub fn Headers::has(self : Headers, name : String) -> Bool {
   self.has_js(@js.JsString::from_string(name))
 }

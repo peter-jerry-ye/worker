@@ -65,12 +65,12 @@ fn URLSearchParams::has_ffi(
   name : @js.JsValue
 ) -> @js.JsValue = "peter-jerry-ye:worker/url_search_params" "has"
 
-pub fn has_js(self : URLSearchParams, name : @js.JsString) -> Bool {
+pub fn URLSearchParams::has_js(self : URLSearchParams, name : @js.JsString) -> Bool {
   URLSearchParams::has_ffi(self |> @js.to_js_value, name |> @js.to_js_value)
   |> @js.from_js_value
 }
 
-pub fn has(self : URLSearchParams, name : String) -> Bool {
+pub fn URLSearchParams::has(self : URLSearchParams, name : String) -> Bool {
   self.has_js(@js.JsString::from_string(name))
 }
 
@@ -79,7 +79,7 @@ fn URLSearchParams::get_ffi(
   name : @js.JsValue
 ) -> @js.JsValue = "peter-jerry-ye:worker/url_search_params" "get"
 
-fn get_js(
+fn URLSearchParams::get_js(
   self : URLSearchParams,
   name : @js.JsString
 ) -> @js.Nullable[@js.JsString] {
@@ -87,6 +87,6 @@ fn get_js(
   |> @js.from_js_value
 }
 
-pub fn get(self : URLSearchParams, name : String) -> Option[String] {
+pub fn URLSearchParams::get(self : URLSearchParams, name : String) -> Option[String] {
   self.get_js(@js.JsString::from_string(name)).to_option().map(@js.JsString::to_string)
 }

@@ -232,19 +232,19 @@ pub impl @js.ToJsValue for D1Response with
 
 fn D1Response::success_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_response_success"
 
-pub fn success(self : D1Response) -> Bool {
+pub fn D1Response::success(self : D1Response) -> Bool {
   D1Response::success_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 fn D1Response::meta_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_response_meta"
 
-pub fn meta(self : D1Response) -> D1Meta {
+pub fn D1Response::meta(self : D1Response) -> D1Meta {
   D1Response::meta_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 fn D1Response::error_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_response_error"
 
-pub fn error(self : D1Response) -> @js.JsValue {
+pub fn D1Response::error(self : D1Response) -> @js.JsValue {
   D1Response::error_ffi(self |> @js.to_js_value)
 }
 
@@ -282,18 +282,18 @@ pub fn results(self : D1ResultRecord) -> Array[@js.Record] {
 
 fn D1ResultRecord::success_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_result_success"
 
-pub fn success(self : D1ResultRecord) -> Bool {
+pub fn D1ResultRecord::success(self : D1ResultRecord) -> Bool {
   D1ResultRecord::success_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 fn D1ResultRecord::meta_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_result_meta"
 
-pub fn meta(self : D1ResultRecord) -> D1Meta {
+pub fn D1ResultRecord::meta(self : D1ResultRecord) -> D1Meta {
   D1ResultRecord::meta_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 fn D1ResultRecord::error_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_result_error"
 
-pub fn error(self : D1ResultRecord) -> @js.JsValue {
+pub fn D1ResultRecord::error(self : D1ResultRecord) -> @js.JsValue {
   D1ResultRecord::error_ffi(self |> @js.to_js_value)
 }
