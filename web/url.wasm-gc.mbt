@@ -21,7 +21,7 @@ pub fn URL::make_js(url : @js.JsString) -> URL {
 }
 
 pub fn URL::make(url : String) -> URL {
-  make_js(@js.JsString::from_string(url))
+  URL::make_js(@js.JsString::from_string(url))
 }
 
 pub impl @js.FromJsValue for URL with
@@ -36,17 +36,17 @@ pub impl @js.ToJsValue for URL with
 fn URL::searchParams_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/url" "get_searchParams"
 
 pub fn searchParams(self : URL) -> URLSearchParams {
-  self |> @js.to_js_value |> searchParams_ffi |> @js.from_js_value
+  self |> @js.to_js_value |> URL::searchParams_ffi |> @js.from_js_value
 }
 
 fn URL::pathname_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/url" "pathname"
 
 pub fn pathname_js(self : URL) -> @js.JsString {
-  self |> @js.to_js_value |> pathname_ffi |> @js.from_js_value
+  self |> @js.to_js_value |> URL::pathname_ffi |> @js.from_js_value
 }
 
 pub fn pathname(self : URL) -> String {
-  (self |> pathname_js).to_string()
+  self.pathname_js().to_string()
 }
 
 type URLSearchParams @js.JsValue
@@ -88,5 +88,5 @@ fn get_js(
 }
 
 pub fn get(self : URLSearchParams, name : String) -> Option[String] {
-  self.get_js(@js.JsString::from_string(name)).to_option().map(@js.to_string)
+  self.get_js(@js.JsString::from_string(name)).to_option().map(@js.JsString::to_string)
 }

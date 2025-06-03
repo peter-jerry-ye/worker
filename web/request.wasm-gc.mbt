@@ -26,7 +26,7 @@ pub impl @js.ToJsValue for Request with
 fn Request::method_ffi(value : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/request" "get_method"
 
 pub fn method_js(self : Request) -> @js.JsString {
-  method_ffi(self |> @js.to_js_value) |> @js.from_js_value
+  Request::method_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 pub fn method(self : Request) -> String {
@@ -36,7 +36,7 @@ pub fn method(self : Request) -> String {
 fn Request::url_ffi(value : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/request" "get_url"
 
 pub fn url_js(self : Request) -> @js.JsString {
-  url_ffi(self |> @js.to_js_value) |> @js.from_js_value
+  Request::url_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 pub fn url(self : Request) -> String {
@@ -46,17 +46,17 @@ pub fn url(self : Request) -> String {
 fn Request::headers_ffi(value : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/request" "get_headers"
 
 pub fn headers(self : Request) -> Headers {
-  Headers(headers_ffi(self |> @js.to_js_value))
+  Headers(Request::headers_ffi(self |> @js.to_js_value))
 }
 
 fn Request::body_used_ffi(value : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/request" "get_bodyUsed"
 
 pub fn body_used_js(self : Request) -> Bool {
-  body_used_ffi(self |> @js.to_js_value) |> @js.from_js_value
+  Request::body_used_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 pub fn body_used(self : Request) -> Bool {
-  body_used_js(self)
+  self.body_used_js()
 }
 
 fn Request::text_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/request" "text"
@@ -91,7 +91,7 @@ pub fn get_js(
 }
 
 pub fn get(self : Headers, name : String) -> Option[String] {
-  self.get_js(@js.JsString::from_string(name)).to_option().map(@js.to_string)
+  self.get_js(@js.JsString::from_string(name)).to_option().map(@js.JsString::to_string)
 }
 
 fn Headers::has_ffi(self : @js.JsValue, name : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/headers" "has"

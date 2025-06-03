@@ -26,7 +26,7 @@ pub impl @js.ToJsValue for Env with
 fn Env::kv_ffi(self : @js.JsValue, binding : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "env_get"
 
 pub fn Env::kv_js(self : Env, binding : @js.JsString) -> KVNamespace {
-  kv_ffi(self |> @js.to_js_value, binding |> @js.to_js_value)
+  Env::kv_ffi(self |> @js.to_js_value, binding |> @js.to_js_value)
   |> @js.from_js_value
 }
 
@@ -37,7 +37,7 @@ pub fn kv(self : Env, binding : String) -> KVNamespace {
 fn Env::d1_ffi(self : @js.JsValue, binding : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "env_get"
 
 pub fn d1_js(self : Env, binding : @js.JsString) -> D1Database {
-  d1_ffi(self |> @js.to_js_value, binding |> @js.to_js_value)
+  Env::d1_ffi(self |> @js.to_js_value, binding |> @js.to_js_value)
   |> @js.from_js_value
 }
 
@@ -67,7 +67,7 @@ pub fn put_string_js(
   key : @js.JsString,
   value : @js.JsString
 ) -> @js.Promise[Unit] {
-  put_string_ffi(
+  KVNamespace::put_string_ffi(
     self |> @js.to_js_value,
     key |> @js.to_js_value,
     value |> @js.to_js_value,
@@ -95,7 +95,7 @@ pub fn get_string_js(
   self : KVNamespace,
   key : @js.JsString
 ) -> @js.Promise[@js.Nullable[@js.JsString]] {
-  get_string_ffi(self |> @js.to_js_value, key |> @js.to_js_value)
+  KVNamespace::get_string_ffi(self |> @js.to_js_value, key |> @js.to_js_value)
   |> @js.from_js_value
 }
 
@@ -126,7 +126,7 @@ pub fn prepare_js(
   self : D1Database,
   query : @js.JsString
 ) -> D1PreparedStatement {
-  prepare_ffi(self |> @js.to_js_value, query |> @js.to_js_value)
+  D1Database::prepare_ffi(self |> @js.to_js_value, query |> @js.to_js_value)
   |> @js.from_js_value
 }
 
@@ -154,7 +154,7 @@ pub fn bind_js(
   self : D1PreparedStatement,
   values : @js.JsArray[@js.JsValue]
 ) -> D1PreparedStatement {
-  bind_ffi(self |> @js.to_js_value, values |> @js.to_js_value)
+  D1PreparedStatement::bind_ffi(self |> @js.to_js_value, values |> @js.to_js_value)
   |> @js.from_js_value
 }
 
@@ -162,7 +162,7 @@ pub fn bind(
   self : D1PreparedStatement,
   values : Array[@js.JsValue]
 ) -> D1PreparedStatement {
-  self.bind_js(values |> @js.from_array)
+  self.bind_js(values |> @js.JsArray::from_array)
 }
 
 fn D1PreparedStatement::first_at_ffi(
@@ -174,7 +174,7 @@ pub fn first_at_js(
   self : D1PreparedStatement,
   colName : @js.JsString
 ) -> @js.Promise[@js.JsValue] {
-  first_at_ffi(self |> @js.to_js_value, colName |> @js.to_js_value)
+  D1PreparedStatement::first_at_ffi(self |> @js.to_js_value, colName |> @js.to_js_value)
   |> @js.from_js_value
 }
 
@@ -190,7 +190,7 @@ fn D1PreparedStatement::first_ffi(self : @js.JsValue) -> @js.JsValue = "peter-je
 pub fn first_js(
   self : D1PreparedStatement
 ) -> @js.Promise[@js.Nullable[@js.Record]] {
-  first_ffi(self |> @js.to_js_value) |> @js.from_js_value
+  D1PreparedStatement::first_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 pub fn first(
@@ -202,7 +202,7 @@ pub fn first(
 fn D1PreparedStatement::run_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_prepared_statement_run"
 
 pub fn run_js(self : D1PreparedStatement) -> @js.Promise[D1Response] {
-  run_ffi(self |> @js.to_js_value) |> @js.from_js_value
+  D1PreparedStatement::run_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 pub fn run(self : D1PreparedStatement) -> @js.Promise[D1Response] {
@@ -212,7 +212,7 @@ pub fn run(self : D1PreparedStatement) -> @js.Promise[D1Response] {
 fn D1PreparedStatement::all_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_prepared_statement_all"
 
 pub fn all_js(self : D1PreparedStatement) -> @js.Promise[D1ResultRecord] {
-  all_ffi(self |> @js.to_js_value) |> @js.from_js_value
+  D1PreparedStatement::all_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 pub fn all(self : D1PreparedStatement) -> @js.Promise[D1ResultRecord] {
@@ -273,7 +273,7 @@ pub impl @js.ToJsValue for D1ResultRecord with
 fn D1ResultRecord::results_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_result_results"
 
 pub fn results_js(self : D1ResultRecord) -> @js.JsArray[@js.Record] {
-  results_ffi(self |> @js.to_js_value) |> @js.from_js_value
+  D1ResultRecord::results_ffi(self |> @js.to_js_value) |> @js.from_js_value
 }
 
 pub fn results(self : D1ResultRecord) -> Array[@js.Record] {
