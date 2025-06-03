@@ -14,12 +14,13 @@
 
 type Response @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(value : @js.JsValue) -> Response {
+pub impl @js.FromJsValue for Response with
+  from_js_value(value : @js.JsValue) -> Response {
   Response(value)
 }
-
-pub fn @js.ToJsValue::to_js_value(value : Response) -> @js.JsValue {
-  value.0
+pub impl @js.ToJsValue for Response with
+  to_js_value(value : Response) -> @js.JsValue {
+  value._
 }
 
 fn Response::make_with_string_ffi(
@@ -53,12 +54,13 @@ pub fn Response::make() -> Response {
 
 type ResponseInit @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(value : @js.JsValue) -> ResponseInit {
+pub impl @js.FromJsValue for ResponseInit with
+  from_js_value(value : @js.JsValue) -> ResponseInit {
   ResponseInit(value)
 }
-
-pub fn @js.ToJsValue::to_js_value(value : ResponseInit) -> @js.JsValue {
-  value.0
+pub impl @js.ToJsValue for ResponseInit with
+  to_js_value(value : ResponseInit) -> @js.JsValue {
+  value._
 }
 
 fn ResponseInit::make_ffi() -> @js.JsValue = "peter-jerry-ye:worker/response_init" "make"

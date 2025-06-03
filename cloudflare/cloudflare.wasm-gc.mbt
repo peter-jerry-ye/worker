@@ -14,12 +14,13 @@
 
 type Env @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(value : @js.JsValue) -> Env {
+pub impl @js.FromJsValue for Env with
+  from_js_value(value : @js.JsValue) -> Env {
   Env(value)
 }
-
-pub fn @js.ToJsValue::to_js_value(value : Env) -> @js.JsValue {
-  value.0
+pub impl @js.ToJsValue for Env with
+  to_js_value(value : Env) -> @js.JsValue {
+  value._
 }
 
 fn Env::kv_ffi(self : @js.JsValue, binding : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "env_get"
@@ -46,12 +47,13 @@ pub fn d1(self : Env, binding : String) -> D1Database {
 
 type KVNamespace @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(value : @js.JsValue) -> KVNamespace {
+pub impl @js.FromJsValue for KVNamespace with
+  from_js_value(value : @js.JsValue) -> KVNamespace {
   KVNamespace(value)
 }
-
-pub fn @js.ToJsValue::to_js_value(value : KVNamespace) -> @js.JsValue {
-  value.0
+pub impl @js.ToJsValue for KVNamespace with
+  to_js_value(value : KVNamespace) -> @js.JsValue {
+  value._
 }
 
 fn KVNamespace::put_string_ffi(
@@ -106,13 +108,14 @@ pub fn get_string(
 
 type D1Database @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(value : @js.JsValue) -> D1Database {
-  D1Database(value)
-}
-
-pub fn @js.ToJsValue::to_js_value(value : D1Database) -> @js.JsValue {
-  value.0
-}
+pub impl @js.FromJsValue for D1Database with
+  from_js_value(value : @js.JsValue) -> D1Database {
+    D1Database(value)
+  }
+pub impl @js.ToJsValue for D1Database with
+  to_js_value(value : D1Database) -> @js.JsValue {
+    value._
+  }
 
 fn D1Database::prepare_ffi(
   self : @js.JsValue,
@@ -133,17 +136,14 @@ pub fn prepare(self : D1Database, query : String) -> D1PreparedStatement {
 
 type D1PreparedStatement @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(
-  value : @js.JsValue
-) -> D1PreparedStatement {
-  D1PreparedStatement(value)
-}
-
-pub fn @js.ToJsValue::to_js_value(
-  value : D1PreparedStatement
-) -> @js.JsValue {
-  value.0
-}
+pub impl @js.FromJsValue for D1PreparedStatement with
+  from_js_value(value : @js.JsValue) -> D1PreparedStatement {
+    D1PreparedStatement(value)
+  }
+pub impl @js.ToJsValue for D1PreparedStatement with
+  to_js_value(value : D1PreparedStatement) -> @js.JsValue {
+    value._
+  }
 
 fn D1PreparedStatement::bind_ffi(
   self : @js.JsValue,
@@ -221,13 +221,14 @@ pub fn all(self : D1PreparedStatement) -> @js.Promise[D1ResultRecord] {
 
 type D1Response @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(val : @js.JsValue) -> D1Response {
-  D1Response(val)
-}
-
-pub fn @js.ToJsValue::to_js_value(val : D1Response) -> @js.JsValue {
-  val.0
-}
+pub impl @js.FromJsValue for D1Response with
+  from_js_value(val : @js.JsValue) -> D1Response {
+    D1Response(val)
+  }
+pub impl @js.ToJsValue for D1Response with
+  to_js_value(val : D1Response) -> @js.JsValue {
+    val._
+  }
 
 fn D1Response::success_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_response_success"
 
@@ -249,22 +250,24 @@ pub fn error(self : D1Response) -> @js.JsValue {
 
 type D1Meta @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(val : @js.JsValue) -> D1Meta {
+pub impl @js.FromJsValue for D1Meta with
+  from_js_value(val : @js.JsValue) -> D1Meta {
   D1Meta(val)
 }
-
-pub fn @js.ToJsValue::to_js_value(val : D1Meta) -> @js.JsValue {
-  val.0
+pub impl @js.ToJsValue for D1Meta with
+  to_js_value(val : D1Meta) -> @js.JsValue {
+  val._
 }
 
 type D1ResultRecord @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(val : @js.JsValue) -> D1ResultRecord {
+pub impl @js.FromJsValue for D1ResultRecord with
+  from_js_value(val : @js.JsValue) -> D1ResultRecord {
   D1ResultRecord(val)
 }
-
-pub fn @js.ToJsValue::to_js_value(val : D1ResultRecord) -> @js.JsValue {
-  val.0
+pub impl @js.ToJsValue for D1ResultRecord with
+  to_js_value(val : D1ResultRecord) -> @js.JsValue {
+  val._
 }
 
 fn D1ResultRecord::results_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/cloudflare" "d1_result_results"

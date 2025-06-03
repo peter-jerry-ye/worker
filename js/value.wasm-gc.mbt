@@ -14,11 +14,11 @@
 
 pub extern type JsValue
 
-pub trait ToJsValue {
+pub(open) trait ToJsValue {
   to_js_value(Self) -> JsValue
 }
 
-pub trait FromJsValue {
+pub(open) trait FromJsValue {
   from_js_value(JsValue) -> Self
 }
 

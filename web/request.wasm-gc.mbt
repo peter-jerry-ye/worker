@@ -14,13 +14,14 @@
 
 type Request @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(value : @js.JsValue) -> Request {
-  Request(value)
-}
-
-pub fn @js.ToJsValue::to_js_value(request : Request) -> @js.JsValue {
-  request.0
-}
+pub impl @js.FromJsValue for Request with
+  from_js_value(value : @js.JsValue) -> Request {
+    Request(value)
+  }
+pub impl @js.ToJsValue for Request with
+  to_js_value(value : Request) -> @js.JsValue {
+    value._
+  }
 
 fn Request::method_ffi(value : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/request" "get_method"
 
@@ -70,13 +71,14 @@ pub fn text(self : Request) -> @js.Promise[@js.JsString] {
 
 type Headers @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(value : @js.JsValue) -> Headers {
-  Headers(value)
-}
-
-pub fn @js.ToJsValue::to_js_value(request : Headers) -> @js.JsValue {
-  request.0
-}
+pub impl @js.FromJsValue for Headers with
+  from_js_value(value : @js.JsValue) -> Headers {
+    Headers(value)
+  }
+pub impl @js.ToJsValue for Headers with
+  to_js_value(value : Headers) -> @js.JsValue {
+    value._
+  }
 
 fn Headers::get_ffi(self : @js.JsValue, name : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/headers" "get"
 

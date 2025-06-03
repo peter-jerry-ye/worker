@@ -24,12 +24,13 @@ pub fn URL::make(url : String) -> URL {
   make_js(@js.JsString::from_string(url))
 }
 
-pub fn @js.FromJsValue::from_js_value(value : @js.JsValue) -> URL {
+pub impl @js.FromJsValue for URL with
+  from_js_value(value : @js.JsValue) -> URL {
   URL(value)
 }
-
-pub fn @js.ToJsValue::to_js_value(value : URL) -> @js.JsValue {
-  value.0
+pub impl @js.ToJsValue for URL with
+  to_js_value(value : URL) -> @js.JsValue {
+  value._
 }
 
 fn URL::searchParams_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/url" "get_searchParams"
@@ -50,14 +51,13 @@ pub fn pathname(self : URL) -> String {
 
 type URLSearchParams @js.JsValue
 
-pub fn @js.FromJsValue::from_js_value(
-  value : @js.JsValue
-) -> URLSearchParams {
+pub impl @js.FromJsValue for URLSearchParams with
+  from_js_value(value : @js.JsValue) -> URLSearchParams {
   URLSearchParams(value)
 }
-
-pub fn @js.ToJsValue::to_js_value(value : URLSearchParams) -> @js.JsValue {
-  value.0
+pub impl @js.ToJsValue for URLSearchParams with
+  to_js_value(value : URLSearchParams) -> @js.JsValue {
+  value._
 }
 
 fn URLSearchParams::has_ffi(
