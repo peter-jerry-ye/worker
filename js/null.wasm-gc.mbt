@@ -21,14 +21,14 @@ pub impl [T] ToJsValue for Nullable[T] with to_js_value(value : Nullable[T]) -> 
   value._
 }
 
-pub fn is_null[T](self : Nullable[T]) -> Bool {
+pub fn Nullable::is_null[T](self : Nullable[T]) -> Bool {
   self._.is_null()
 }
 
-pub fn unwrap[T : FromJsValue](self : Nullable[T]) -> T {
+pub fn Nullable::unwrap[T : FromJsValue](self : Nullable[T]) -> T {
   self._ |> from_js_value
 }
 
-pub fn to_option[T : FromJsValue](self : Nullable[T]) -> Option[T] {
+pub fn Nullable::to_option[T : FromJsValue](self : Nullable[T]) -> Option[T] {
   @option.unless(self.is_null(), fn() { self.unwrap() })
 }

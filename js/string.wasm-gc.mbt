@@ -27,8 +27,10 @@ pub fn JsString::empty() -> JsString {
   JsString(JsString::empty_ffi())
 }
 
+fn JsString::length_ffi(self : JsValue) -> Int = "peter-jerry-ye:worker/string" "length"
+
 pub fn JsString::length(self : JsString) -> Int {
-  self |> to_js_value |> length_ffi
+  self |> to_js_value |> JsString::length_ffi
 }
 
 fn JsString::from_code_point_ffi(value : JsValue) -> JsValue = "peter-jerry-ye:worker/string" "fromCodePoint"

@@ -29,7 +29,7 @@ pub impl[T] ToJsValue for JsArray[T] with to_js_value(arr : JsArray[T]) -> JsVal
 }
 
 pub fn JsArray::new[T]() -> JsArray[T] {
-  JsArray(new_ffi())
+  JsArray(JsArray::new_ffi())
 }
 
 pub fn get[T : FromJsValue](self : JsArray[T], index : Int) -> T {
@@ -37,11 +37,11 @@ pub fn get[T : FromJsValue](self : JsArray[T], index : Int) -> T {
 }
 
 pub fn push[T : ToJsValue](self : JsArray[T], value : T) -> Unit {
-  self._ |> push_ffi(to_js_value(value))
+  self._ |> JsArray::push_ffi(to_js_value(value))
 }
 
 pub fn length[T](self : JsArray[T]) -> Int {
-  length_ffi(self._)
+  JsArray::length_ffi(self._)
 }
 
 pub fn JsArray::to_array[T : FromJsValue](value : JsArray[T]) -> Array[T] {

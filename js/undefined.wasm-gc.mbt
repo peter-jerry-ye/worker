@@ -21,11 +21,15 @@ pub impl[T] ToJsValue for Optional[T] with to_js_value(value : Optional[T]) -> J
   value._
 }
 
-pub fn is_undefined[T](self : Optional[T]) -> Bool {
+pub fn Optional::is_undefined[T](self : Optional[T]) -> Bool {
   self._.is_undefined()
 }
 
-pub fn to_option[T : FromJsValue](self : Optional[T]) -> Option[T] {
+pub fn Optional::unwrap[T : FromJsValue](self : Optional[T]) -> T {
+  self._ |> from_js_value
+}
+
+pub fn Optional::to_option[T : FromJsValue](self : Optional[T]) -> Option[T] {
   if self._.is_undefined() {
     None
   } else {

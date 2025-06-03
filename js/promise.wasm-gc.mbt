@@ -46,5 +46,5 @@ pub fn bind[A : FromJsValue, B : ToJsValue](
 fn Promise::resolve_ffi(value : JsValue) -> JsValue = "peter-jerry-ye:worker/promise" "resolve"
 
 pub fn Promise::resolve[A : ToJsValue](value : A) -> Promise[A] {
-  { val: resolve_ffi(value.to_js_value()) }
+  { val: Promise::resolve_ffi(value.to_js_value()) }
 }
