@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-enum HTTP_Request_Method {
+pub(all) enum HTTP_Request_Method {
   GET
   HEAD
   POST
@@ -39,7 +39,7 @@ pub fn HTTP_Request_Method::from_string(
   }
 }
 
-pub type Handler (@web.Request, @cf.Env) -> Option[@js.Promise[@web.Response]]
+pub(all) type Handler (@web.Request, @cf.Env) -> Option[@js.Promise[@web.Response]]
 
 pub fn or(self : Handler, other : Handler) -> Handler {
   Handler(
@@ -47,9 +47,9 @@ pub fn or(self : Handler, other : Handler) -> Handler {
       request : @web.Request,
       env : @cf.Env
     ) -> Option[@js.Promise[@web.Response]] {
-      match (self.0)(request, env) {
+      match (self._)(request, env) {
         Some(response) => Some(response)
-        None => (other.0)(request, env)
+        None => (other._)(request, env)
       }
     },
   )
@@ -59,16 +59,16 @@ pub fn apply(
   self : Handler,
   request : @web.Request,
   env : @cf.Env,
-  ~default : @js.Promise[@web.Response] = @web.Response::make_with_string(
+  default~ : @js.Promise[@web.Response] = @web.Response::make_with_string(
       "Not Found",
       @web.ResponseInit::make().set_status(404),
     )
     |> @js.Promise::resolve
 ) -> @js.Promise[@web.Response] {
-  (self.0)(request, env).or(default)
+  (self._)(request, env).or(default)
 }
 
-pub type Router (HTTP_Request_Method, String) -> Option[Handler]
+pub(all) type Router (HTTP_Request_Method, String) -> Option[Handler]
 
 pub fn to_handler(self : Router) -> Handler {
   let Router(router) = self
@@ -85,4 +85,4 @@ pub fn to_handler(self : Router) -> Handler {
   )
 }
 
-pub type MiddleWare (Handler) -> Handler
+pub(all) type MiddleWare (Handler) -> Handler

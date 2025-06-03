@@ -38,9 +38,9 @@ let create_user : Handler = Handler(
                   ,
                 ).bind(
                   [
-                    @js.from_string(username) |> @js.to_js_value,
-                    @js.from_string(password) |> @js.to_js_value,
-                    @js.from_string(role) |> @js.to_js_value,
+                    @js.JsString::from_string(username) |> @js.to_js_value,
+                    @js.JsString::from_string(password) |> @js.to_js_value,
+                    @js.JsString::from_string(role) |> @js.to_js_value,
                   ],
                 ).run().map(
                   fn {
@@ -60,7 +60,7 @@ let create_user : Handler = Handler(
             },
           ).or(
             @web.Response::make_with_string(
-              "failed to parse: \(text)",
+              "failed to parse: \{text}",
               @web.ResponseInit::make().set_status(400),
             )
             |> @js.Promise::resolve,
@@ -96,7 +96,7 @@ let get_user_role : Handler = Handler(
             )
           } else {
             @web.Response::make_with_string(
-              "failed to get role of \(username)",
+              "failed to get role of \{username}",
               @web.ResponseInit::make().set_status(404),
             )
           }

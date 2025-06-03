@@ -29,9 +29,9 @@ fn fetch(request : @web.Request, env : @cf.Env) -> @js.Promise[@web.Response] {
       GET, "/" => Some(hello_handler)
       PUT, "/api/d1/user" => Some(create_user)
       method, path =>
-        if method == GET && starts_with(path, "/api/d1/user/") {
+        if method == GET && path.has_prefix("/api/d1/user/") {
           Some(get_user_role)
-        } else if starts_with(path, "/api") { // TODO: use slice match
+        } else if path.has_prefix("/api") { // TODO: use slice match
           secured_router.to_handler() |> naive_auth_middleware |> @option.some
         } else {
           None
@@ -39,16 +39,6 @@ fn fetch(request : @web.Request, env : @cf.Env) -> @js.Promise[@web.Response] {
     },
   )
   router.to_handler().apply(request, env)
-}
-
-fn starts_with(str : String, other : String) -> Bool {
-  str.length() >= other.length() && for i = 0; i < other.length(); i = i + 1 {
-    if str[i] != other[i] {
-      return false
-    }
-  } else {
-    true
-  }
 }
 
 let hello_handler : Handler = Handler(
@@ -86,7 +76,7 @@ let put_handler : Handler = Handler(
             },
           ).or(
             @web.Response::make_with_string(
-              "failed to parse: \(text)",
+              "failed to parse: \{text}",
               @web.ResponseInit::make().set_status(400),
             )
             |> @js.Promise::resolve,
@@ -109,9 +99,9 @@ let get_handler : Handler = Handler(
         key =>
           env.kv("MY_KV_NAMESPACE").get_string(key).map(
             fn(str : @js.Nullable[@js.JsString]) -> @web.Response {
-              let result = str.to_option().map(@js.to_string).or("null")
+              let result = str.to_option().map(@js.JsString::to_string).or("null")
               @web.Response::make_with_string(
-                "\(key) -> \(result)",
+                "\{key} -> \{result}",
                 @web.ResponseInit::make(),
               )
             },
@@ -123,7 +113,7 @@ let get_handler : Handler = Handler(
 
 pub fn naive_auth_middleware(
   handler : Handler,
-  ~with_fall_through : Bool = false
+  with_fall_through~ : Bool = false
 ) -> Handler {
   Handler(
     fn(
@@ -132,7 +122,7 @@ pub fn naive_auth_middleware(
     ) -> Option[@js.Promise[@web.Response]] {
       let headers = request.headers()
       if headers.get("Authorization").or("") == "MoonBit" {
-        (handler.0)(request, env)
+        (handler._)(request, env)
       } else if with_fall_through {
         None
       } else {
