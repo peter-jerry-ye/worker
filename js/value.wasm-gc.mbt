@@ -46,36 +46,51 @@ pub impl FromJsValue for Unit with from_js_value(_unit) {
 }
 
 ///|
-fn[A, B] dangerous_case(value : A) -> B = "%identity"
+fn bool_to_js(value : Bool) -> JsValue = "peter-jerry-ye:worker/js" "identity"
+
+///|
+fn js_to_bool(value : JsValue) -> Bool = "peter-jerry-ye:worker/js" "identity"
 
 ///|
 pub impl ToJsValue for Bool with to_js_value(value) {
-  dangerous_case(value)
+  bool_to_js(value)
 }
 
 ///|
 pub impl FromJsValue for Bool with from_js_value(value) {
-  dangerous_case(value)
+  js_to_bool(value)
 }
 
 ///|
+fn int_to_js(value : Int) -> JsValue = "peter-jerry-ye:worker/js" "identity"
+
+///|
+fn js_to_int(value : JsValue) -> Int = "peter-jerry-ye:worker/js" "identity"
+
+///|
 pub impl ToJsValue for Int with to_js_value(value) {
-  dangerous_case(value)
+  int_to_js(value)
 }
 
 ///|
 pub impl FromJsValue for Int with from_js_value(value) {
-  dangerous_case(value)
+  js_to_int(value)
 }
 
 ///|
+fn double_to_js(value : Double) -> JsValue = "peter-jerry-ye:worker/js" "identity"
+
+///|
+fn js_to_double(value : JsValue) -> Double = "peter-jerry-ye:worker/js" "identity"
+
+///|
 pub impl ToJsValue for Double with to_js_value(value) {
-  dangerous_case(value)
+  double_to_js(value)
 }
 
 ///|
 pub impl FromJsValue for Double with from_js_value(value) {
-  dangerous_case(value)
+  js_to_double(value)
 }
 
 ///|

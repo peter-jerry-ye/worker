@@ -34,8 +34,7 @@ import module from '../target/wasm-gc/release/build/lib/lib.wasm';
 import js_ffi, { flush } from '../web/import.mjs';
 import cf_ffi from '../cloudflare/import.mjs';
 let instance = await WebAssembly.instantiate(module, { ...js_ffi, ...cf_ffi });
-let { _start, fetch: wasm_main } = instance.exports as { _start: () => void, fetch: (req: Request, env: Env) => Response };
-_start();
+let { fetch: wasm_main } = instance.exports as { _start: () => void, fetch: (req: Request, env: Env) => Response };
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
