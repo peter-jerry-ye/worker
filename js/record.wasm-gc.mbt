@@ -12,22 +12,28 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+///|
 type Record JsValue
 
+///|
 fn Record::get_ffi(self : JsValue, key : JsValue) -> JsValue = "peter-jerry-ye:worker/js" "get"
 
+///|
 pub fn Record::get_js(self : Record, key : JsString) -> JsValue {
   Record::get_ffi(self |> to_js_value, key |> to_js_value) |> from_js_value
 }
 
+///|
 pub fn Record::get(self : Record, key : String) -> JsValue {
   self.get_js(JsString::from_string(key))
 }
 
+///|
 pub impl FromJsValue for Record with from_js_value(value : JsValue) -> Record {
   Record(value)
 }
 
+///|
 pub impl ToJsValue for Record with to_js_value(value : Record) -> JsValue {
   value._
 }

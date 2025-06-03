@@ -12,39 +12,52 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+///|
 type JsArray[T] JsValue
 
+///|
 fn JsArray::new_ffi() -> JsValue = "peter-jerry-ye:worker/array" "new"
 
+///|
 fn JsArray::push_ffi(array : JsValue, value : JsValue) = "peter-jerry-ye:worker/array" "push"
 
+///|
 fn JsArray::length_ffi(self : JsValue) -> Int = "peter-jerry-ye:worker/array" "length"
 
-pub impl[T] FromJsValue for JsArray[T] with from_js_value(value : JsValue) -> JsArray[T] {
+///|
+pub impl[T] FromJsValue for JsArray[T] with from_js_value(value : JsValue) -> JsArray[
+  T,
+] {
   JsArray(value)
 }
 
+///|
 pub impl[T] ToJsValue for JsArray[T] with to_js_value(arr : JsArray[T]) -> JsValue {
   arr._
 }
 
-pub fn JsArray::new[T]() -> JsArray[T] {
+///|
+pub fn[T] JsArray::new() -> JsArray[T] {
   JsArray(JsArray::new_ffi())
 }
 
-pub fn get[T : FromJsValue](self : JsArray[T], index : Int) -> T {
+///|
+pub fn[T : FromJsValue] get(self : JsArray[T], index : Int) -> T {
   self._.get_with_index(index)
 }
 
-pub fn push[T : ToJsValue](self : JsArray[T], value : T) -> Unit {
+///|
+pub fn[T : ToJsValue] push(self : JsArray[T], value : T) -> Unit {
   self._ |> JsArray::push_ffi(to_js_value(value))
 }
 
-pub fn length[T](self : JsArray[T]) -> Int {
+///|
+pub fn[T] length(self : JsArray[T]) -> Int {
   JsArray::length_ffi(self._)
 }
 
-pub fn JsArray::to_array[T : FromJsValue](value : JsArray[T]) -> Array[T] {
+///|
+pub fn[T : FromJsValue] JsArray::to_array(value : JsArray[T]) -> Array[T] {
   let array = Array::new(capacity=value.length())
   for i = 0; i < value.length(); i = i + 1 {
     array.push(value.get(i))
@@ -52,7 +65,8 @@ pub fn JsArray::to_array[T : FromJsValue](value : JsArray[T]) -> Array[T] {
   array
 }
 
-pub fn JsArray::from_array[T : ToJsValue](arr : Array[T]) -> JsArray[T] {
+///|
+pub fn[T : ToJsValue] JsArray::from_array(arr : Array[T]) -> JsArray[T] {
   let array = JsArray::new()
   arr.each(fn { v => array.push(v) })
   array

@@ -12,20 +12,28 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+///|
 struct Promise[T] {
   val : JsValue
 }
 
-pub impl [T] FromJsValue for Promise[T] with from_js_value(value : JsValue) -> Promise[T] {
+///|
+pub impl[T] FromJsValue for Promise[T] with from_js_value(value : JsValue) -> Promise[
+  T,
+] {
   { val: value }
 }
-pub impl [T] ToJsValue for Promise[T] with to_js_value(value : Promise[T]) -> JsValue {
+
+///|
+pub impl[T] ToJsValue for Promise[T] with to_js_value(value : Promise[T]) -> JsValue {
   value.val
 }
 
+///|
 fn then_ffi(promise : JsValue, f : (JsValue) -> JsValue) -> JsValue = "peter-jerry-ye:worker/promise" "then"
 
-pub fn map[A : FromJsValue, B : ToJsValue](
+///|
+pub fn[A : FromJsValue, B : ToJsValue] map(
   self : Promise[A],
   f : (A) -> B
 ) -> Promise[B] {
@@ -34,7 +42,8 @@ pub fn map[A : FromJsValue, B : ToJsValue](
   }
 }
 
-pub fn bind[A : FromJsValue, B : ToJsValue](
+///|
+pub fn[A : FromJsValue, B : ToJsValue] bind(
   self : Promise[A],
   f : (A) -> Promise[B]
 ) -> Promise[B] {
@@ -43,8 +52,10 @@ pub fn bind[A : FromJsValue, B : ToJsValue](
   }
 }
 
+///|
 fn Promise::resolve_ffi(value : JsValue) -> JsValue = "peter-jerry-ye:worker/promise" "resolve"
 
-pub fn Promise::resolve[A : ToJsValue](value : A) -> Promise[A] {
+///|
+pub fn[A : ToJsValue] Promise::resolve(value : A) -> Promise[A] {
   { val: Promise::resolve_ffi(value.to_js_value()) }
 }

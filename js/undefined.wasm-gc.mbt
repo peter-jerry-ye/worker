@@ -12,24 +12,33 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+///|
 pub type Optional[T] JsValue
 
-pub impl[T] FromJsValue for Optional[T] with from_js_value(value : JsValue) -> Optional[T] {
+///|
+pub impl[T] FromJsValue for Optional[T] with from_js_value(value : JsValue) -> Optional[
+  T,
+] {
   Optional(value)
 }
+
+///|
 pub impl[T] ToJsValue for Optional[T] with to_js_value(value : Optional[T]) -> JsValue {
   value._
 }
 
-pub fn Optional::is_undefined[T](self : Optional[T]) -> Bool {
+///|
+pub fn[T] Optional::is_undefined(self : Optional[T]) -> Bool {
   self._.is_undefined()
 }
 
-pub fn Optional::unwrap[T : FromJsValue](self : Optional[T]) -> T {
+///|
+pub fn[T : FromJsValue] Optional::unwrap(self : Optional[T]) -> T {
   self._ |> from_js_value
 }
 
-pub fn Optional::to_option[T : FromJsValue](self : Optional[T]) -> Option[T] {
+///|
+pub fn[T : FromJsValue] Optional::to_option(self : Optional[T]) -> T? {
   if self._.is_undefined() {
     None
   } else {

@@ -12,73 +12,97 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+///|
 type URL @js.JsValue
 
+///|
 fn URL::make_ffi(url : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/url" "new"
 
+///|
 pub fn URL::make_js(url : @js.JsString) -> URL {
   URL::make_ffi(url |> @js.to_js_value) |> @js.from_js_value
 }
 
+///|
 pub fn URL::make(url : String) -> URL {
   URL::make_js(@js.JsString::from_string(url))
 }
 
-pub impl @js.FromJsValue for URL with
-  from_js_value(value : @js.JsValue) -> URL {
+///|
+pub impl @js.FromJsValue for URL with from_js_value(value : @js.JsValue) -> URL {
   URL(value)
 }
-pub impl @js.ToJsValue for URL with
-  to_js_value(value : URL) -> @js.JsValue {
+
+///|
+pub impl @js.ToJsValue for URL with to_js_value(value : URL) -> @js.JsValue {
   value._
 }
 
+///|
 fn URL::searchParams_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/url" "get_searchParams"
 
+///|
 pub fn searchParams(self : URL) -> URLSearchParams {
   self |> @js.to_js_value |> URL::searchParams_ffi |> @js.from_js_value
 }
 
+///|
 fn URL::pathname_ffi(self : @js.JsValue) -> @js.JsValue = "peter-jerry-ye:worker/url" "pathname"
 
+///|
 pub fn pathname_js(self : URL) -> @js.JsString {
   self |> @js.to_js_value |> URL::pathname_ffi |> @js.from_js_value
 }
 
+///|
 pub fn pathname(self : URL) -> String {
   self.pathname_js().to_string()
 }
 
+///|
 type URLSearchParams @js.JsValue
 
-pub impl @js.FromJsValue for URLSearchParams with
-  from_js_value(value : @js.JsValue) -> URLSearchParams {
+///|
+pub impl @js.FromJsValue for URLSearchParams with from_js_value(
+  value : @js.JsValue
+) -> URLSearchParams {
   URLSearchParams(value)
 }
-pub impl @js.ToJsValue for URLSearchParams with
-  to_js_value(value : URLSearchParams) -> @js.JsValue {
+
+///|
+pub impl @js.ToJsValue for URLSearchParams with to_js_value(
+  value : URLSearchParams
+) -> @js.JsValue {
   value._
 }
 
+///|
 fn URLSearchParams::has_ffi(
   self : @js.JsValue,
   name : @js.JsValue
 ) -> @js.JsValue = "peter-jerry-ye:worker/url_search_params" "has"
 
-pub fn URLSearchParams::has_js(self : URLSearchParams, name : @js.JsString) -> Bool {
+///|
+pub fn URLSearchParams::has_js(
+  self : URLSearchParams,
+  name : @js.JsString
+) -> Bool {
   URLSearchParams::has_ffi(self |> @js.to_js_value, name |> @js.to_js_value)
   |> @js.from_js_value
 }
 
+///|
 pub fn URLSearchParams::has(self : URLSearchParams, name : String) -> Bool {
   self.has_js(@js.JsString::from_string(name))
 }
 
+///|
 fn URLSearchParams::get_ffi(
   self : @js.JsValue,
   name : @js.JsValue
 ) -> @js.JsValue = "peter-jerry-ye:worker/url_search_params" "get"
 
+///|
 fn URLSearchParams::get_js(
   self : URLSearchParams,
   name : @js.JsString
@@ -87,6 +111,10 @@ fn URLSearchParams::get_js(
   |> @js.from_js_value
 }
 
-pub fn URLSearchParams::get(self : URLSearchParams, name : String) -> Option[String] {
-  self.get_js(@js.JsString::from_string(name)).to_option().map(@js.JsString::to_string)
+///|
+pub fn URLSearchParams::get(self : URLSearchParams, name : String) -> String? {
+  self
+  .get_js(@js.JsString::from_string(name))
+  .to_option()
+  .map(@js.JsString::to_string)
 }

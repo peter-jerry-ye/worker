@@ -12,6 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+///|
 pub(all) enum HTTP_Request_Method {
   GET
   HEAD
@@ -23,9 +24,8 @@ pub(all) enum HTTP_Request_Method {
   PATCH
 } derive(Eq)
 
-pub fn HTTP_Request_Method::from_string(
-  s : String
-) -> Option[HTTP_Request_Method] {
+///|
+pub fn HTTP_Request_Method::from_string(s : String) -> HTTP_Request_Method? {
   match s {
     "GET" | "get" => Some(HTTP_Request_Method::GET)
     "HEAD" | "head" => Some(HTTP_Request_Method::HEAD)
@@ -39,22 +39,23 @@ pub fn HTTP_Request_Method::from_string(
   }
 }
 
-pub(all) type Handler (@web.Request, @cf.Env) -> Option[@js.Promise[@web.Response]]
+///|
+pub(all) type Handler (@web.Request, @cf.Env) -> @js.Promise[@web.Response]?
 
+///|
 pub fn or(self : Handler, other : Handler) -> Handler {
-  Handler(
-    fn(
-      request : @web.Request,
-      env : @cf.Env
-    ) -> Option[@js.Promise[@web.Response]] {
-      match (self._)(request, env) {
-        Some(response) => Some(response)
-        None => (other._)(request, env)
-      }
-    },
-  )
+  Handler(fn(
+    request : @web.Request,
+    env : @cf.Env
+  ) -> @js.Promise[@web.Response]? {
+    match (self._)(request, env) {
+      Some(response) => Some(response)
+      None => (other._)(request, env)
+    }
+  })
 }
 
+///|
 pub fn apply(
   self : Handler,
   request : @web.Request,
@@ -68,21 +69,22 @@ pub fn apply(
   (self._)(request, env).or(default)
 }
 
-pub(all) type Router (HTTP_Request_Method, String) -> Option[Handler]
+///|
+pub(all) type Router (HTTP_Request_Method, String) -> Handler?
 
+///|
 pub fn to_handler(self : Router) -> Handler {
   let Router(router) = self
-  Handler(
-    fn(
-      request : @web.Request,
-      env : @cf.Env
-    ) -> Option[@js.Promise[@web.Response]] {
-      let path = @web.URL::make(request.url()).pathname()
-      HTTP_Request_Method::from_string(request.method()).bind(
-        fn { m => router(m, path) },
-      ).bind(fn { Handler(handler) => handler(request, env) })
-    },
-  )
+  Handler(fn(
+    request : @web.Request,
+    env : @cf.Env
+  ) -> @js.Promise[@web.Response]? {
+    let path = @web.URL::make(request.url()).pathname()
+    HTTP_Request_Method::from_string(request.method())
+    .bind(fn { m => router(m, path) })
+    .bind(fn { Handler(handler) => handler(request, env) })
+  })
 }
 
+///|
 pub(all) type MiddleWare (Handler) -> Handler

@@ -12,22 +12,26 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+///|
 type Response @js.JsValue
 
-pub impl @js.FromJsValue for Response with
-  from_js_value(value : @js.JsValue) -> Response {
+///|
+pub impl @js.FromJsValue for Response with from_js_value(value : @js.JsValue) -> Response {
   Response(value)
 }
-pub impl @js.ToJsValue for Response with
-  to_js_value(value : Response) -> @js.JsValue {
+
+///|
+pub impl @js.ToJsValue for Response with to_js_value(value : Response) -> @js.JsValue {
   value._
 }
 
+///|
 fn Response::make_with_string_ffi(
   body : @js.JsValue,
   init : @js.JsValue
 ) -> @js.JsValue = "peter-jerry-ye:worker/response" "make_with_string"
 
+///|
 pub fn Response::make_with_string_js(
   body : @js.JsString,
   init : ResponseInit
@@ -39,6 +43,7 @@ pub fn Response::make_with_string_js(
   |> @js.from_js_value
 }
 
+///|
 pub fn Response::make_with_string(
   body : String,
   init : ResponseInit
@@ -46,34 +51,44 @@ pub fn Response::make_with_string(
   Response::make_with_string_js(@js.JsString::from_string(body), init)
 }
 
+///|
 fn Response::make_ffi() -> @js.JsValue = "peter-jerry-ye:worker/response" "make"
 
+///|
 pub fn Response::make() -> Response {
   Response::make_ffi() |> @js.from_js_value
 }
 
+///|
 type ResponseInit @js.JsValue
 
-pub impl @js.FromJsValue for ResponseInit with
-  from_js_value(value : @js.JsValue) -> ResponseInit {
+///|
+pub impl @js.FromJsValue for ResponseInit with from_js_value(
+  value : @js.JsValue
+) -> ResponseInit {
   ResponseInit(value)
 }
-pub impl @js.ToJsValue for ResponseInit with
-  to_js_value(value : ResponseInit) -> @js.JsValue {
+
+///|
+pub impl @js.ToJsValue for ResponseInit with to_js_value(value : ResponseInit) -> @js.JsValue {
   value._
 }
 
+///|
 fn ResponseInit::make_ffi() -> @js.JsValue = "peter-jerry-ye:worker/response_init" "make"
 
+///|
 pub fn ResponseInit::make() -> ResponseInit {
   ResponseInit(ResponseInit::make_ffi())
 }
 
+///|
 fn ResponseInit::set_status_ffi(
   value : @js.JsValue,
   status : @js.JsValue
 ) -> @js.JsValue = "peter-jerry-ye:worker/response_init" "set_status"
 
+///|
 pub fn set_status(self : ResponseInit, status : Int) -> ResponseInit {
   ResponseInit::set_status_ffi(
     self |> @js.to_js_value,
@@ -82,11 +97,13 @@ pub fn set_status(self : ResponseInit, status : Int) -> ResponseInit {
   |> @js.from_js_value
 }
 
+///|
 pub fn ResponseInit::set_status_text_ffi(
   value : @js.JsValue,
   status_text : @js.JsValue
 ) -> @js.JsValue = "peter-jerry-ye:worker/response_init" "set_status_text"
 
+///|
 pub fn set_status_text_js(
   self : ResponseInit,
   status_text : @js.JsString
@@ -98,6 +115,7 @@ pub fn set_status_text_js(
   |> @js.from_js_value
 }
 
+///|
 pub fn set_status_text(
   self : ResponseInit,
   status_text : String

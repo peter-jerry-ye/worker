@@ -12,29 +12,38 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+///|
 type JS_Symbol JsValue
 
+///|
 pub impl FromJsValue for JS_Symbol with from_js_value(value : JsValue) -> JS_Symbol {
   JS_Symbol(value)
 }
+
+///|
 pub impl ToJsValue for JS_Symbol with to_js_value(value : JS_Symbol) -> JsValue {
   value._
 }
 
+///|
 fn JS_Symbol::make_ffi(value : JsValue) -> JsValue = "peter-jerry-ye:worker/js" "symbol"
 
+///|
 pub fn JS_Symbol::make() -> JS_Symbol {
   JS_Symbol::make_ffi(JsValue::undefined()) |> from_js_value
 }
 
+///|
 pub fn JS_Symbol::make_with_string_js(value : JsString) -> JS_Symbol {
   JS_Symbol::make_ffi(value |> to_js_value) |> from_js_value
 }
 
+///|
 pub fn JS_Symbol::make_with_string(value : String) -> JS_Symbol {
   JS_Symbol::make_with_string_js(JsString::from_string(value))
 }
 
+///|
 pub fn JS_Symbol::make_with_number(value : Double) -> JS_Symbol {
   JS_Symbol::make_ffi(value |> to_js_value) |> from_js_value
 }

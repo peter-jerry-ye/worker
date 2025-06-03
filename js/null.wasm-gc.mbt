@@ -12,23 +12,32 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+///|
 pub type Nullable[T] JsValue
 
-pub impl [T] FromJsValue for Nullable[T] with from_js_value(value : JsValue) -> Nullable[T] {
+///|
+pub impl[T] FromJsValue for Nullable[T] with from_js_value(value : JsValue) -> Nullable[
+  T,
+] {
   Nullable(value)
 }
-pub impl [T] ToJsValue for Nullable[T] with to_js_value(value : Nullable[T]) -> JsValue {
+
+///|
+pub impl[T] ToJsValue for Nullable[T] with to_js_value(value : Nullable[T]) -> JsValue {
   value._
 }
 
-pub fn Nullable::is_null[T](self : Nullable[T]) -> Bool {
+///|
+pub fn[T] Nullable::is_null(self : Nullable[T]) -> Bool {
   self._.is_null()
 }
 
-pub fn Nullable::unwrap[T : FromJsValue](self : Nullable[T]) -> T {
+///|
+pub fn[T : FromJsValue] Nullable::unwrap(self : Nullable[T]) -> T {
   self._ |> from_js_value
 }
 
-pub fn Nullable::to_option[T : FromJsValue](self : Nullable[T]) -> Option[T] {
+///|
+pub fn[T : FromJsValue] Nullable::to_option(self : Nullable[T]) -> T? {
   @option.unless(self.is_null(), fn() { self.unwrap() })
 }
