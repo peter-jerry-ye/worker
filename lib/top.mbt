@@ -62,25 +62,25 @@ let put_handler : Handler = Handler(
       fn {
         t => {
           let text = t.to_string()
-          @json.parse(text).to_option().bind(
-            fn {
-              value => {
-                let key = value.value("key")?.as_string()?
-                let value = value.value("value")?.as_string()?
-                Some(
-                  env.kv("MY_KV_NAMESPACE").put_string(key, value).map(
-                    fn(_unit) { @web.Response::make() },
-                  ),
-                )
-              }
-            },
-          ).or(
-            @web.Response::make_with_string(
+          try @json.parse(text) catch {
+            _ => @web.Response::make_with_string(
               "failed to parse: \{text}",
               @web.ResponseInit::make().set_status(400),
             )
-            |> @js.Promise::resolve,
-          )
+            |> @js.Promise::resolve
+          } else {
+            {"key": String(key), "value": String(value), ..} =>
+                  env.kv("MY_KV_NAMESPACE").put_string(key, value).map(
+                    fn(_unit) { @web.Response::make() },
+                  )
+            _ => @web.Response::make_with_string(
+              "failed to parse kv data",
+              @web.ResponseInit::make().set_status(400),
+            )
+            |> @js.Promise::resolve
+          }
+          
+
         }
       },
     )

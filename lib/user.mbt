@@ -24,12 +24,22 @@ let create_user : Handler = Handler(
       fn {
         t => {
           let text = t.to_string()
-          @json.parse(text).to_option().bind(
-            fn {
-              value => {
-                let username = value.value("username")?.as_string()?
-                let password = value.value("password")?.as_string()?
-                let role = value.value("role").bind(@json.as_string).or(
+          try @json.parse(text) catch {
+            _ => {
+              @web.Response::make_with_string(
+                "failed to parse: \{text}",
+                @web.ResponseInit::make().set_status(400),
+              )
+              |> @js.Promise::resolve
+            }
+          } else {
+            {
+              "username": String(username),
+              "password": String(password),
+              "role"?: role,
+              ..
+            } => {
+                let role = role.bind(Json::as_string).or(
                   "visitor",
                 )
                 let d1 = env.d1("MY_DB")
@@ -55,16 +65,15 @@ let create_user : Handler = Handler(
                       }
                   },
                 )
-                |> @option.some
               }
-            },
-          ).or(
-            @web.Response::make_with_string(
-              "failed to parse: \{text}",
-              @web.ResponseInit::make().set_status(400),
-            )
-            |> @js.Promise::resolve,
-          )
+            _ => {
+              @web.Response::make_with_string(
+                "failed to parse user data",
+                @web.ResponseInit::make().set_status(400),
+              )
+              |> @js.Promise::resolve
+            }
+          }
         }
       },
     )
