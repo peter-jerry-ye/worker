@@ -14,12 +14,11 @@
 
 type JsString JsValue
 
-pub fn ToJsValue::to_js_value(self : JsString) -> JsValue {
-  self._
-}
-
-pub fn FromJsValue::from_js_value(self : JsValue) -> JsString {
+pub impl FromJsValue for JsString with from_js_value(self : JsValue) -> JsString {
   JsString(self)
+}
+pub impl ToJsValue for JsString with to_js_value(self : JsString) -> JsValue {
+  self._
 }
 
 fn JsString::empty_ffi() -> JsValue = "peter-jerry-ye:worker/string" "empty"

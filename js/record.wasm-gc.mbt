@@ -24,10 +24,10 @@ pub fn get(self : Record, key : String) -> JsValue {
   self.get_js(JsString::from_string(key))
 }
 
-pub fn FromJsValue::from_js_value(value : JsValue) -> Record {
+pub impl FromJsValue for Record with from_js_value(value : JsValue) -> Record {
   Record(value)
 }
 
-pub fn ToJsValue::to_js_value(value : Record) -> JsValue {
+pub impl ToJsValue for Record with to_js_value(value : Record) -> JsValue {
   value._
 }

@@ -14,12 +14,11 @@
 
 type JS_Symbol JsValue
 
-pub fn FromJsValue::from_js_value(value : JsValue) -> JS_Symbol {
+pub impl FromJsValue for JS_Symbol with from_js_value(value : JsValue) -> JS_Symbol {
   JS_Symbol(value)
 }
-
-pub fn ToJsValue::to_js_value(arr : JS_Symbol) -> JsValue {
-  arr._
+pub impl ToJsValue for JS_Symbol with to_js_value(value : JS_Symbol) -> JsValue {
+  value._
 }
 
 fn JS_Symbol::make_ffi(value : JsValue) -> JsValue = "peter-jerry-ye:worker/js" "symbol"

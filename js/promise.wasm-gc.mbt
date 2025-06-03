@@ -16,11 +16,10 @@ struct Promise[T] {
   val : JsValue
 }
 
-pub fn FromJsValue::from_js_value[T](value : JsValue) -> Promise[T] {
+pub impl [T] FromJsValue for Promise[T] with from_js_value(value : JsValue) -> Promise[T] {
   { val: value }
 }
-
-pub fn ToJsValue::to_js_value[T](value : Promise[T]) -> JsValue {
+pub impl [T] ToJsValue for Promise[T] with to_js_value(value : Promise[T]) -> JsValue {
   value.val
 }
 

@@ -20,11 +20,11 @@ fn JsArray::push_ffi(array : JsValue, value : JsValue) = "peter-jerry-ye:worker/
 
 fn JsArray::length_ffi(self : JsValue) -> Int = "peter-jerry-ye:worker/array" "length"
 
-pub fn FromJsValue::from_js_value[T](value : JsValue) -> JsArray[T] {
+pub impl[T] FromJsValue for JsArray[T] with from_js_value(value : JsValue) -> JsArray[T] {
   JsArray(value)
 }
 
-pub fn ToJsValue::to_js_value[T](arr : JsArray[T]) -> JsValue {
+pub impl[T] ToJsValue for JsArray[T] with to_js_value(arr : JsArray[T]) -> JsValue {
   arr._
 }
 

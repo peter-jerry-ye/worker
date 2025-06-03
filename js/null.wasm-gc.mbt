@@ -14,11 +14,10 @@
 
 pub type Nullable[T] JsValue
 
-pub fn FromJsValue::from_js_value[T](value : JsValue) -> Nullable[T] {
+pub impl [T] FromJsValue for Nullable[T] with from_js_value(value : JsValue) -> Nullable[T] {
   Nullable(value)
 }
-
-pub fn ToJsValue::to_js_value[T](value : Nullable[T]) -> JsValue {
+pub impl [T] ToJsValue for Nullable[T] with to_js_value(value : Nullable[T]) -> JsValue {
   value._
 }
 

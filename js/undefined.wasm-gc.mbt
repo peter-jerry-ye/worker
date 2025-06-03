@@ -14,11 +14,10 @@
 
 pub type Optional[T] JsValue
 
-pub fn FromJsValue::from_js_value[T](value : JsValue) -> Optional[T] {
+pub impl[T] FromJsValue for Optional[T] with from_js_value(value : JsValue) -> Optional[T] {
   Optional(value)
 }
-
-pub fn ToJsValue::to_js_value[T](value : Optional[T]) -> JsValue {
+pub impl[T] ToJsValue for Optional[T] with to_js_value(value : Optional[T]) -> JsValue {
   value._
 }
 

@@ -30,29 +30,39 @@ pub fn from_js_value[T : FromJsValue](value : JsValue) -> T {
   T::from_js_value(value)
 }
 
-pub fn ToJsValue::to_js_value(_unit : Unit) -> JsValue = "peter-jerry-ye:worker/js" "null"
-
-pub fn FromJsValue::from_js_value(_unit : JsValue) -> Unit {
-  ()
+pub impl ToJsValue for Unit with to_js_value(_unit) {
+  JsValue::null()
 }
 
-pub fn ToJsValue::to_js_value(value : Bool) -> JsValue = "peter-jerry-ye:worker/js" "identity"
+pub impl FromJsValue for Unit with from_js_value(_unit) {
+  () // Unit is represented as an empty tuple
+}
 
-pub fn FromJsValue::from_js_value(value : JsValue) -> Bool = "peter-jerry-ye:worker/js" "identity"
+fn dangerous_case[A, B](value : A) -> B = "%identity"
 
-pub fn ToJsValue::to_js_value(value : Int) -> JsValue = "peter-jerry-ye:worker/js" "identity"
+pub impl ToJsValue for Bool with to_js_value(value) {
+  dangerous_case(value)
+}
+pub impl FromJsValue for Bool with from_js_value(value) {
+  dangerous_case(value)
+}
+pub impl ToJsValue for Int with to_js_value(value) {
+  dangerous_case(value)
+}
+pub impl FromJsValue for Int with from_js_value(value) {
+  dangerous_case(value)
+}
+pub impl ToJsValue for Double with to_js_value(value) {
+  dangerous_case(value)
+}
+pub impl FromJsValue for Double with from_js_value(value) {
+  dangerous_case(value)
+}
 
-pub fn FromJsValue::from_js_value(value : JsValue) -> Int = "peter-jerry-ye:worker/js" "identity"
-
-pub fn ToJsValue::to_js_value(value : Double) -> JsValue = "peter-jerry-ye:worker/js" "identity"
-
-pub fn FromJsValue::from_js_value(value : JsValue) -> Double = "peter-jerry-ye:worker/js" "identity"
-
-pub fn ToJsValue::to_js_value(value : JsValue) -> JsValue {
+pub impl ToJsValue for JsValue with to_js_value(value) {
   value
 }
-
-pub fn FromJsValue::from_js_value(value : JsValue) -> JsValue {
+pub impl FromJsValue for JsValue with from_js_value(value) {
   value
 }
 
